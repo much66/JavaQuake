@@ -840,14 +840,20 @@ if selected == 'Clustering Visualization':
             cluster_area = 0
 
         # Tambahkan informasi ke popup
+        latitude = row['latitude']
+        longitude = row['longitude']
+    
         popup_text = (f"Centroid of Cluster {idx}<br>"
+                      f"Latitude: {latitude:.4f}<br>"
+                      f"Longitude: {longitude:.4f}<br>"
                       f"Jumlah Gempa: {event_count}<br>"
-                      f"Rata-rata Kedalaman: {depth_mean:.2f} km<br>"
+                      f"Rentang Kedalaman: {depth_min:.2f} km - {depth_max:.2f} km<br>"
+                      f"Rentang Magnitudo: {magnitude_min:.2f} - {magnitude_max:.2f}<br>"
                       f"Rentang Tahun: {year_min} - {year_max}<br>"
                       f"Luas Cluster: ± {cluster_area:.2f} km²")
-
+    
         folium.Marker(
-            location=[row['latitude'], row['longitude']],
+            location=[latitude, longitude],
             popup=popup_text,
             icon=folium.Icon(color='green', icon='info-sign')
         ).add_to(m)
