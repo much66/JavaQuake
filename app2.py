@@ -425,27 +425,27 @@ if selected == 'Analytics':
 
     # Membuat pie chart menggunakan plotly dan menonjolkan bagian terbesar
     fig_pie = go.Figure(data=[go.Pie(
-        labels=labels,  # Tambahkan labels
+        labels=labels,
         values=sizes,
-        hoverinfo='label+percent+value',  # Menampilkan label, persentase, dan nilai
-        textinfo='label+percent',  # Menampilkan label dan persentase
+        hoverinfo='label+percent+value',
+        textinfo='label+percent',
         textfont_size=14,
-        textfont=dict(family='League Spartan', color='white'),  # Mengatur font dan warna teks
+        textfont=dict(family='League Spartan', color='white'),
         marker=dict(line=dict(color='black', width=2)),
-        pull=[0.1 if i == max_index else 0 for i in range(len(sizes))],  # Menonjolkan data terbesar
-        marker_colors=colors  # Mengatur warna
+        pull=[0.1 if i == max_index else 0 for i in range(len(sizes))],
+        marker_colors=colors
     )])
 
     # Menambahkan judul dan layout untuk pie chart
     fig_pie.update_layout(
         legend_title="Waktu Sehari",
         margin=dict(t=50, l=0, r=0, b=0),
-        font=dict(family='League Spartan', color='white')  # Mengatur font untuk judul dan legenda
+        font=dict(family='League Spartan', color='white')
     )
 
     # Data contoh: magnitudo gempa bumi dalam persen
     labels_bar = ['Minor', 'Mikro', 'Ringan', 'Sedang', 'Besar', 'Mayor', 'Kuat']
-    magnitudes = [46.78, 38.21, 12.13, 2.06, 0.36, 0.05, 0.14]  # Persentase magnitudo gempa
+    magnitudes = [46.78, 38.21, 12.13, 2.06, 0.36, 0.05, 0.14]
 
     # Warna khusus untuk masing-masing bar
     colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#33FFF3', '#F3FF33', '#FF33A8']
@@ -454,10 +454,10 @@ if selected == 'Analytics':
     fig_bar = go.Figure(data=[go.Bar(
         x=labels_bar,
         y=magnitudes,
-        text=[f'{val:.2f}%' for val in magnitudes],  # Menampilkan persentase sebagai teks di atas bar
-        textposition='auto',  # Posisi teks akan otomatis diatur agar tampil rapi
-        marker_color=colors,  # Warna batang khusus untuk tiap bar
-        marker_line_color='rgba(0, 0, 0, 1)',  # Warna garis batas batang
+        text=[f'{val:.2f}%' for val in magnitudes],
+        textposition='auto',
+        marker_color=colors,
+        marker_line_color='rgba(0, 0, 0, 1)',
         marker_line_width=1.5
     )])
 
@@ -465,23 +465,23 @@ if selected == 'Analytics':
     fig_bar.update_layout(
         title_text="Kekuatan Gempa Bumi Berdasarkan Magnitudo",
         xaxis_title="Klasifikasi Gempa",
-        yaxis_title="Persentase",  # Ubah label yaxis menjadi 'Persentase'
-        yaxis=dict(range=[0, 50]),  # Rentang sumbu y disesuaikan hingga 50
+        yaxis_title="Persentase",
+        yaxis=dict(range=[0, 50]),
         margin=dict(t=50, l=0, r=0, b=0)
     )
 
     # Data untuk chart di col3 (misal: intensitas gempa di berbagai wilayah)
     labels_col3 = ['Dangkal', 'Sedang', 'Dalam']
-    intensities = [85.41, 13.17, 0.88]  # Contoh data intensitas
+    intensities = [85.41, 13.17, 0.88]
 
     # Membuat bar chart untuk col3
     fig_col3 = go.Figure(data=[go.Bar(
         x=labels_col3,
         y=intensities,
-        text=[f'{val}%' for val in intensities],  # Tampilkan teks persentase di atas bar
+        text=[f'{val}%' for val in intensities],
         textposition='auto',
-        marker_color='#FF5733',  # Warna batang
-        marker_line_color='rgba(0, 0, 0, 1)',  # Warna garis batas
+        marker_color='#FF5733',
+        marker_line_color='rgba(0, 0, 0, 1)',
         marker_line_width=1.5
     )])
 
@@ -490,13 +490,13 @@ if selected == 'Analytics':
         title_text="Intensitas Gempa Berdasarkan Kedalaman",
         xaxis_title="Kategori Kedalaman",
         yaxis_title="Count",
-        yaxis=dict(range=[0, 50]),  # Rentang sumbu y disesuaikan
+        yaxis=dict(range=[0, 50]),
         margin=dict(t=50, l=0, r=0, b=0)
     )
 
     # Data untuk chart di col4 (misal: frekuensi gempa per tahun)
     labels_col4 = ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']
-    frequencies = [1.27, 5.73, 7.37, 7.27, 11.58, 9.93, 8.45, 9.64, 17.21, 13.77, 7.79]  # Frekuensi gempa per tahun
+    frequencies = [1.27, 5.73, 7.37, 7.27, 11.58, 9.93, 8.45, 9.64, 17.21, 13.77, 7.79]
 
     # Menghitung total frekuensi untuk konversi ke persen
     total_frequencies = sum(frequencies)
@@ -504,27 +504,19 @@ if selected == 'Analytics':
 
     # Daftar warna untuk setiap batang
     colors = [
-        'rgb(255, 99, 132)',  # Merah muda
-        'rgb(54, 162, 235)',  # Biru
-        'rgb(255, 206, 86)',  # Kuning
-        'rgb(75, 192, 192)',  # Hijau muda
-        'rgb(153, 102, 255)',  # Ungu
-        'rgb(255, 159, 64)',  # Oranye
-        'rgb(201, 203, 207)',  # Abu-abu
-        'rgb(255, 99, 71)',  # Tomat
-        'rgb(0, 128, 0)',  # Hijau
-        'rgb(0, 0, 255)',  # Biru tua
-        'rgb(255, 20, 147)'  # Deep Pink
+        'rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 206, 86)', 'rgb(75, 192, 192)',
+        'rgb(153, 102, 255)', 'rgb(255, 159, 64)', 'rgb(201, 203, 207)', 'rgb(255, 99, 71)',
+        'rgb(0, 128, 0)', 'rgb(0, 0, 255)', 'rgb(255, 20, 147)'
     ]
 
     # Membuat bar chart untuk col4 dengan persentase
     fig_col4 = go.Figure(data=[go.Bar(
         x=labels_col4,
         y=percentages,
-        text=[f'{val:.2f}%' for val in percentages],  # Tampilkan teks persentase di atas bar
+        text=[f'{val:.2f}%' for val in percentages],
         textposition='auto',
-        marker_color=colors[:len(percentages)],  # Menggunakan warna dari daftar
-        marker_line_color='rgba(0, 0, 0, 1)',  # Warna garis batas
+        marker_color=colors[:len(percentages)],
+        marker_line_color='rgba(0, 0, 0, 1)',
         marker_line_width=1.5
     )])
 
@@ -532,42 +524,32 @@ if selected == 'Analytics':
     fig_col4.update_layout(
         title_text="Frekuensi Gempa Bumi per Tahun (Persentase)",
         xaxis_title="Tahun",
-        yaxis_title="Frekuensi (%)",  # Ubah label yaxis menjadi 'Frekuensi (%)'
-        yaxis=dict(range=[0, 50]),  # Rentang sumbu y disesuaikan
+        yaxis_title="Frekuensi (%)",
+        yaxis=dict(range=[0, 50]),
         margin=dict(t=50, l=0, r=0, b=0)
     )
 
-    # Membuat kontainer untuk pie chart, bar chart, dan tambahan chart di col3
+    # Membuat kontainer untuk layout vertikal
     with st.container():
         st.header("Distribusi Java Quake")
 
-        # Menggunakan 2 kolom untuk menyandingkan pie chart dan bar chart
+        # Gunakan 2 kolom vertikal
         col1, col2 = st.columns(2)
 
-        # Kontainer untuk pie chart
+        # Kolom 1 untuk Pie chart dan Bar chart col3
         with col1:
             st.write("Pie chart berikut menunjukkan proporsi kejadian gempa bumi dalam rentang waktu yang berbeda selama 10 tahun terakhir.")
-            # Tampilkan pie chart interaktif di Streamlit
             st.plotly_chart(fig_pie, use_container_width=True)
 
-        # Kontainer untuk bar chart
-        with col2:
-            st.write("Bar chart berikut menunjukkan kekuatan gempa bumi berdasarkan magnitudo masing-masing kejadian dalam 10 tahun terakhir.")
-            # Tampilkan bar chart di Streamlit
-            st.plotly_chart(fig_bar, use_container_width=True)
-
-        # Kontainer untuk chart baru di col3
-        st.write("Bar chart ini menggambarkan pengelompokan kategori kedalaman gempa bumi, yaitu dangkal, sedang, dan dalam, berdasarkan rentang kedalaman tertentu dalam 10 tahun terakhir.")
-        col3, col4 = st.columns(2)  # Membuat dua kolom baru untuk col3 dan col4
-
-        # Kontainer untuk chart baru di col3
-        with col3:
+            st.write("Bar chart ini menggambarkan pengelompokan kategori kedalaman gempa bumi, yaitu dangkal, sedang, dan dalam.")
             st.plotly_chart(fig_col3, use_container_width=True)
 
-        # Kontainer untuk chart baru di col4
-        with col4:
+        # Kolom 2 untuk Bar chart col2 dan col4
+        with col2:
+            st.write("Bar chart berikut menunjukkan kekuatan gempa bumi berdasarkan magnitudo masing-masing kejadian dalam 10 tahun terakhir.")
+            st.plotly_chart(fig_bar, use_container_width=True)
+
             st.write("Bar chart ini menunjukkan frekuensi gempa bumi per tahun dalam 10 tahun terakhir.")
-            # Tampilkan chart baru di Streamlit
             st.plotly_chart(fig_col4, use_container_width=True)
 
 
