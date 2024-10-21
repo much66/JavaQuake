@@ -308,23 +308,24 @@ if selected == 'Data Description':
   st.markdown('<h1>Dataset Description</h1>', unsafe_allow_html=True)
   st.markdown('---')
   st.markdown("""Dataset yang kami gunakan diambil dari <a href="https://www.kaggle.com/datasets/kekavigi/earthquakes-in-indonesia/data">https://www.kaggle.com/datasets/kekavigi/earthquakes-in-indonesia/data</a>. 
-  dan Repositori Gempa (Preliminary Earthquake Catalog) yang dikelola oleh BMKG Indonesia. Ini berisi data kejadian gempa bumi dari 1 November 2008 hingga 30 September
-  2024, tetapi mungkin tidak akurat untuk beberapa kejadian gempa bumi terakhir yang tercatat. Ada 11 variabel dalam dataset ini, masing-masing dengan nama deskriptif.
-  Variabel yang dikumpulkan dalam dataset ini adalah:
+  dan Preliminary Earthquake Catalog (Katalog Gempa Awal) yang mencakup data Mekanisme Fokal (jika ada) dalam repositori gempa yang dikelola oleh BMKG Indonesia. Ini berisi data kejadian gempa bumi dari 1 Oktober 
+  2014 hingga 30 September 2024 (1 dekade), tetapi mungkin tidak akurat untuk beberapa kejadian gempa bumi terakhir yang tercatat. Ada 11 variabel dalam dataset ini, masing-masing dengan nama deskriptif. Variabel 
+  yang dikumpulkan dalam dataset ini adalah:
 
-  1. eventID : Kode identitas kejadian unik
-  2. datetime : Mengacu pada waktu (Waktu asal) ketika gempa bumi terjadi
-  3. latitude : Koordinat lintang geografis episentrum gempa (6N, -11S)
-  4. longitude : Koordinat bujur geografis episentrum gempa (95W, 141E)
-  5. magnitude : Nilai yang menunjukkan besarnya kekuatan gempa
-  6. mag_type : Jenis besaran gempa seperti Mlv, Mw, MwP, dll
-  7. depth : Kedalaman gempa, tempat di dalam bumi dimana gempa terjadi
-  8. phasecount : Jumlah stasiun fase kedatangan gempa bumi
-  9. azimuth_gap : Celah azimuthal adalah sudut maksimum yang memisahkan dua stasiun seismik yang berdekatan, keduanya diukur dari episentrum gempa bumi. Jika celah azimuthal lebih dari 180°, akurasi lokasi menurun secara signifikan. Kemampuan deteksi jaringan dapat dievaluasi berdasarkan hubungan antara magnitudo dan jarak pengamatan.
-  10. location : Nama lokasi episentrum gempa mengacu pada Wilayah Flinn-Engdahl (F-E). Wilayah F-E terdiri dari serangkaian zona seismik yang berdekatan yang menutupi permukaan Bumi. Dalam seismologi, zona ini merupakan standar untuk melokalisasi gempa bumi. Skema ini diusulkan pada tahun 1965 oleh Edward A.
-  11. agency : BMKG, lembaga resmi yang bertugas dalam penyediaan informasi gempa bumi
+  1. EventID : Kode identitas kejadian unik
+  2. Datetime : Mengacu pada waktu (Waktu asal) ketika gempa bumi terjadi
+  3. Latitude : Koordinat lintang geografis episentrum gempa (6N, -11S)
+  4. Longitude : Koordinat bujur geografis episentrum gempa (95W, 141E)
+  5. Magnitude : Nilai yang menunjukkan besarnya kekuatan gempa
+  6. Mag_type : Jenis besaran gempa seperti Mlv, Mw, MwP, dll
+  7. Depth : Kedalaman gempa, tempat di dalam bumi dimana gempa terjadi
+  8. Phasecount : Jumlah stasiun fase kedatangan gempa bumi
+  9. Azimuth_gap : Celah azimuthal adalah sudut maksimum yang memisahkan dua stasiun seismik yang berdekatan, keduanya diukur dari episentrum gempa bumi. Jika celah azimuthal lebih dari 180°, akurasi lokasi menurun secara signifikan. Kemampuan deteksi jaringan dapat dievaluasi berdasarkan hubungan antara magnitudo dan jarak pengamatan.
+  10. Location : Nama lokasi episentrum gempa mengacu pada Wilayah Flinn-Engdahl (F-E). Wilayah F-E terdiri dari serangkaian zona seismik yang berdekatan yang menutupi permukaan Bumi. Dalam seismologi, zona ini merupakan standar untuk melokalisasi gempa bumi. Skema ini diusulkan pada tahun 1965 oleh Edward A.
+  11. Agency : BMKG, lembaga resmi yang bertugas dalam penyediaan informasi gempa bumi
+  12. Variabel mekanisme fokal (banyak nilai hilang) : datetimeFM, latFM, lonFM, magFM, magTypeFM, depthFM, phasecountFM, AzGapFM, scalarMoment, Mrr, Mtt, Mpp, Mrt, Mrp, Mtp, varianceReduction, doubleCouple, clvd, strikeNP1, dipNP1, rakeNP1, strikeNP2, dipNP2, rakeNP2, azgapFM, misfit
   </div>""", unsafe_allow_html=True)
-  st.markdown('<div>Berikut Dataset yang digunakan dalam prediksi kualitas air ini :</div>', unsafe_allow_html=True)
+  st.markdown('<div>Berikut Dataset yang digunakan dalam cluster JavaQuake:</div>', unsafe_allow_html=True)
 
   df = load_data()
   # Menampilkan DataFrame sebagai tabel interaktif
