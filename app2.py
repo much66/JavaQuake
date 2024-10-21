@@ -995,7 +995,7 @@ if selected == 'About Us':
         },
         {
             "name": "Arif Muhammad Rifai",
-            "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/Arif.jpg?raw=true",
+            "image_url": "https://github.com/much66/JavaQuake/blob/main/foto/Arif.jpg?raw=true",
             "role": "Modeller",
             "email": "arifmuchrif@gmail.com",
             "description": "Arif bertanggung jawab atas pengembangan dan pemeliharaan model. Ia fokus pada pemodelan data yang presisi untuk memastikan hasil yang optimal dan dapat diandalkan dalam setiap analisis."
