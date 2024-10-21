@@ -600,19 +600,30 @@ if selected == 'Clustering Visualization':
     from streamlit_folium import folium_static
 
     # Baca data dari URL GitHub
+    # Baca data dari URL GitHub
     url = "https://raw.githubusercontent.com/lutfijulpian/MaetalaSciencetist/refs/heads/main/tempDF2.csv"
     tempDf2 = pd.read_csv(url)
 
     # Judul halaman
     st.title("Clustering Visualization")
 
-    # Filter interaktif di konten utama (hanya cluster)
+    # Penjelasan tentang DBSCAN
     st.markdown("### Clustering menggunakan DBSCAN (Density-Based Spatial Clustering of Applications with Noise)")
-    st.markdown("Fungsi filter dibawah ini memungkinkan pengguna untuk memilih cluster tertentu dari data yang dianalisis. Dengan opsi yang disediakan, pengguna dapat memilih untuk melihat semua cluster yang valid (0 hingga 30), atau hanya cluster noise (-1).")
+    st.markdown("""
+    Kami memfokuskan model DBSCAN ini pada gempa yang signifikan dengan magnitudo lebih dari 3.5 SR dan kedalaman kurang dari 70 km. 
+    Dengan menggunakan parameter terbaik yang kami temukan, yaitu epsilon 0.065 dan minimum samples 5, kami berhasil mengidentifikasi 
+    33 cluster area rawan gempa di Pulau Jawa dengan Silhouette Score sebesar 0.509. Berdasarkan hasil clustering yang kami dapatkan, 
+    terdapat 6 cluster yang terletak di daratan. Cluster-cluster tersebut bisa menjadi bahan pertimbangan bagi pemerintah untuk perumusan kebijakan 
+    dan pengoptimalan sistem peringatan dini di daerah rawan tersebut.
+    """)
+
+    st.markdown("Fungsi filter di bawah ini memungkinkan pengguna untuk memilih cluster tertentu dari data yang dianalisis. "
+                "Dengan opsi yang disediakan, pengguna dapat memilih untuk melihat semua cluster yang valid (0 hingga 30), atau hanya cluster noise (-1).")
+
     # Mendapatkan cluster yang valid (0 sampai 30 dan -1)
     unique_clusters = tempDf2['cluster'].unique()
     valid_clusters = [cluster for cluster in unique_clusters if cluster >= 0 and cluster <= 30]
-    
+
     # Menambahkan opsi "All Cluster" dan "Noise"
     dropdown_clusters = ["All Cluster"] + valid_clusters + ["Noise (-1)"]
 
@@ -759,110 +770,74 @@ if selected == 'Clustering Visualization':
 
 
     #K-Means
-    # Baca data dari URL GitHub
-    url = "https://raw.githubusercontent.com/lutfijulpian/MaetalaSciencetist/refs/heads/main/tempDF2.csv"
-    tempDf2 = pd.read_csv(url)
+    # URL dataset
+    cluster_data_url = "https://raw.githubusercontent.com/lutfijulpian/MaetalaSciencetist/refs/heads/main/df1%20(1).csv"
 
-    # Judul halaman
-    st.markdown("### Clustering menggunakan K-MEANS")
+    # Memuat dataset
+    df1 = pd.read_csv(cluster_data_url)
 
-    # Hitung centroid
-    centroids = tempDf2.groupby('area')[['latitude', 'longitude']].mean()
+    # Menentukan warna untuk setiap cluster
+    color_map = {
+        0: 'blue',
+        1: 'orange',
+        2: 'green',
+        3: 'red'
+    }
 
-    # Kalkulasi statistik untuk popup centroid
-    cluster_stats = tempDf2.groupby('area').agg({
-        'depth': ['mean', 'count'],
-        'magnitude': 'mean',
-        'year': ['min', 'max']
-    }).reset_index()
+    # Menentukan lokasi awal peta (rata-rata latitude dan longitude)
+    m = folium.Map(location=[df1['latitude'].mean(), df1['longitude'].mean()], zoom_start=6)
 
-    # Inisialisasi peta folium
-    m = folium.Map(location=[tempDf2['latitude'].mean(), tempDf2['longitude'].mean()], zoom_start=5)
-
-    # Buat Marker Cluster untuk titik gempa
-    marker_cluster = MarkerCluster().add_to(m)
-
-    # Tambahkan setiap titik gempa ke peta
-    for idx, row in tempDf2.iterrows():
-        folium.Marker(
-            location=[row['latitude'], row['longitude']],
-            popup=f"Cluster: {row['area']}, Magnitude: {row['magnitude']}, Depth: {row['depth']}, Tahun: {row['year']}",
-            icon=folium.Icon(color='blue' if row['area'] != -1 else 'red')  # Merah untuk noise (-1), biru untuk cluster
-        ).add_to(marker_cluster)
-
-    # Fungsi untuk menghitung luas area poligon
-    def calculate_polygon_area(coords):
-        if coords[0] != coords[-1]:
-            coords.append(coords[0])  # Pastikan poligon tertutup
-
-        total_area = 0.0
-        for i in range(len(coords) - 1):
-            latlon1 = coords[i]
-            latlon2 = coords[i + 1]
-            edge_length = geodesic(latlon1, latlon2).kilometers
-            total_area += edge_length
-
-        return total_area  # Output luas area dalam kilometer persegi
-
-    # Tambahkan centroid cluster beserta statistik tambahan ke popup
-    for idx, row in centroids.iterrows():
-        stats = cluster_stats[cluster_stats['area'] == idx]
-        depth_mean = stats['depth']['mean'].values[0] if not stats.empty else 0
-        event_count = int(stats['depth']['count'].values[0]) if not stats.empty else 0
-        year_min = int(stats['year']['min'].values[0]) if not stats.empty else 0
-        year_max = int(stats['year']['max'].values[0]) if not stats.empty else 0
-
-        # Hitung luas cluster
-        cluster_points = tempDf2[tempDf2['area'] == idx][['latitude', 'longitude']].values
-        if len(cluster_points) > 2:
-            hull = ConvexHull(cluster_points)
-            hull_points = cluster_points[hull.vertices]
-            hull_polygon = [[point[0], point[1]] for point in hull_points]
-            cluster_area = calculate_polygon_area(hull_polygon)
-        else:
-            cluster_area = 0
-
-        # Tambahkan informasi ke popup
-        latitude = row['latitude']
-        longitude = row['longitude']
-    
-        popup_text = (f"Centroid of Cluster {idx}<br>"
-                      f"Latitude: {latitude:.4f}<br>"
-                      f"Longitude: {longitude:.4f}<br>"
-                      f"Jumlah Gempa: {event_count}<br>"
-                      f"Rentang Kedalaman: {depth_min:.2f} km - {depth_max:.2f} km<br>"
-                      f"Rentang Magnitudo: {magnitude_min:.2f} - {magnitude_max:.2f}<br>"
-                      f"Rentang Tahun: {year_min} - {year_max}<br>"
-                      f"Luas Cluster: ± {cluster_area:.2f} km²")
-    
-        folium.Marker(
-            location=[latitude, longitude],
-            popup=popup_text,
-            icon=folium.Icon(color='green', icon='info-sign')
+    # Menambahkan titik-titik ke peta dengan warna berdasarkan cluster
+    for _, row in df1.iterrows():
+        folium.CircleMarker(
+            location=(row['latitude'], row['longitude']),
+            radius=2,  # Ukuran titik
+            color=color_map[row['cluster1_4']],  # Ambil warna sesuai cluster
+            fill=True,
+            fill_opacity=0.4,
+            popup=f'Cluster: {row["cluster1_4"]}',  # Menampilkan cluster saat diklik
         ).add_to(m)
 
-    # Tambahkan convex hull boundaries untuk setiap cluster
-    colors = ['#FF5733', '#33FF57', '#3357FF', '#F5B041', '#AF7AC5']
+    # Menampilkan peta di Streamlit menggunakan st_folium
+    st.markdown("### Clustering menggunakan K-MEANS")
+    st_folium(m, width=700, height=500)
 
-    for cluster_id in tempDf2['area'].unique():
-        if cluster_id != -1:  # Abaikan noise
-            cluster_points = tempDf2[tempDf2['area'] == cluster_id][['latitude', 'longitude']].values
-            if len(cluster_points) > 2:
-                hull = ConvexHull(cluster_points)
-                hull_points = cluster_points[hull.vertices]
-                hull_polygon = [[point[0], point[1]] for point in hull_points]
+    # Menampilkan penjelasan hasil K-Means Clustering
+    st.header('Hasil K-Means Clustering')
+    st.write("""
+    Kami berhasil mengidentifikasi **4 cluster utama** dari data gempa bumi dengan **Silhouette Score 0.46**. Berikut adalah karakteristik masing-masing cluster:
+    """)
+    st.subheader('Cluster 0 (Biru):')
+    st.write("""
+    - **Kedalaman**: 2.0 - 126.0 km
+    - **Magnitudo**: 3.33 - 7.89
+    - **Deskripsi**: Gempa-gempa ini memiliki potensi dampak signifikan akibat kedalamannya yang dangkal dan magnitudonya yang besar.
+    """)
 
-                # Buat polygon di sekitar cluster
-                folium.Polygon(
-                    locations=hull_polygon,
-                    color=colors[cluster_id % len(colors)],
-                    fill=True,
-                    fill_opacity=0.4
-                ).add_to(m)
+    st.subheader('Cluster 1 (Oranye):')
+    st.write("""
+    - **Kedalaman**: 3.0 - 149.0 km
+    - **Magnitudo**: 1.14 - 3.34
+    - **Deskripsi**: Meskipun magnitudonya kecil, gempa-gempa ini perlu dipantau karena kedalaman dangkal dapat menyebabkan dampak terasa di permukaan.
+    """)
 
-    # Tampilkan peta dalam Streamlit
-    st.write("Peta ini menunjukkan lokasi gempa bumi berdasarkan cluster yang telah dianalisis menggunakan K-MEANS.")
-    folium_static(m)
+    st.subheader('Cluster 2 (Hijau):')
+    st.write("""
+    - **Kedalaman**: 74.0 - 324.0 km
+    - **Magnitudo**: 2.29 - 5.6
+    - **Deskripsi**: Gempa-gempa dalam cluster ini mungkin tidak selalu terasa di permukaan, tetapi tetap penting untuk dipantau.
+    """)
+
+    st.subheader('Cluster 3 (Merah):')
+    st.write("""
+    - **Kedalaman**: 354.0 - 750.0 km
+    - **Magnitudo**: 3.28 - 6.91
+    - **Deskripsi**: Dampak di permukaan mungkin minimal meskipun magnitudonya besar, karena kedalamannya yang sangat dalam.
+    """)
+
+    st.write("""
+    Clustering ini membantu kami memahami karakteristik gempa berdasarkan magnitudo dan kedalamannya, yang sangat penting untuk penilaian risiko dan perencanaan mitigasi.
+    """)
 
     # Footer
     st.markdown("""
