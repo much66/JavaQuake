@@ -617,6 +617,16 @@ if selected == 'Clustering Visualization':
     dan pengoptimalan sistem peringatan dini di daerah rawan tersebut.
     """)
 
+    st.subheader('Daerah Centroid Cluster di Daratan:')
+    st.write("""
+    - **0**:  Sukajaya, Kabupaten Garut, Jawa Barat
+    - **10**: Neglawangi, Kabupaten Bandung, Jawa Barat
+    - **23**: Cipeuteuy, Kabupaten Sukabumi, Jawa Barat
+    - **25**: Gn. Kramat, Kabupaten Sukabumi, Jawa Barat
+    - **26**: Sawarna, Kabupaten Lebak, Banten
+    - **30**: Padaluyu, Kabupaten Cianjur, Jawa Barat
+    """)
+    
     st.markdown("Fungsi filter di bawah ini memungkinkan pengguna untuk memilih cluster tertentu dari data yang dianalisis. "
                 "Dengan opsi yang disediakan, pengguna dapat memilih untuk melihat semua cluster yang valid (0 hingga 30), atau hanya cluster noise (-1).")
 
