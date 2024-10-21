@@ -636,7 +636,7 @@ if selected == 'Clustering Visualization':
 
     # Menambahkan opsi "All Cluster" dan "Noise"
     dropdown_clusters = ["All Cluster"] + valid_clusters + ["Noise (-1)"]
-
+    dropdown_clusters = sorted(dropdown_clusters)
     selected_cluster = st.selectbox("Pilih Cluster", options=dropdown_clusters)
 
     # Filter data berdasarkan input pengguna
