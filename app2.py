@@ -995,35 +995,36 @@ if selected == 'About Us':
         unsafe_allow_html=True
     )
 
+    # Daftar anggota tim
     team_members = [
-    {
-        "name": "Mohammad Faikar Natsir",
-        "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/faikar.jpg?raw=true",
-        "role": "Project Leader",
-        "email": "faikar.natsir@gmail.com",
-        "description": "Faikar memimpin tim dalam pengembangan solusi data science yang inovatif. Dengan keahlian dalam analisis dan pemodelan data, ia memastikan setiap aspek proyek berjalan lancar dan memberikan hasil yang maksimal."
-    },
-    {
-        "name": "Fedro Rizkyana Padila",
-        "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/Fedro.JPG?raw=true",
-        "role": "Data Analyst",
-        "email": "fedro.rizkyana@example.com",
-        "description": "Fedro bertanggung jawab atas analisis data dan pelaporan. Ia memastikan bahwa data yang digunakan akurat dan relevan untuk mendukung pengambilan keputusan serta menghasilkan wawasan yang mendalam."
-    },
-    {
-        "name": "Lutfi Julpian",
-        "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/Lutfi.jpg?raw=true",
-        "role": "Visualization",
-        "email": "lutfijulpian@gmail.com",
-        "description": "Lutfi bertanggung jawab untuk menciptakan visualisasi data yang intuitif dan informatif. Ia membantu mengubah data mentah menjadi cerita yang menarik."
-    },
-    {
-        "name": "Arif Muhammad Rifai",
-        "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/Arif.jpg?raw=true",
-        "role": "Modeller",
-        "email": "arif.rifai@example.com",
-        "description": "Arif bertanggung jawab atas pengembangan dan pemeliharaan model. Ia fokus pada pemodelan data yang presisi untuk memastikan hasil yang optimal dan dapat diandalkan dalam setiap analisis."
-    },
+        {
+            "name": "Mohammad Faikar Natsir",
+            "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/faikar.jpg?raw=true",
+            "role": "Project Leader",
+            "email": "misteralfikri@gmail.com",
+            "description": "Faikar memimpin tim dalam pengembangan solusi data science yang inovatif. Dengan keahlian dalam analisis dan pemodelan data, ia memastikan setiap aspek proyek berjalan lancar dan memberikan hasil yang maksimal."
+        },
+        {
+            "name": "Fedro Rizkyana Padila",
+            "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/Fedro.JPG?raw=true",
+            "role": "Data Analyst",
+            "email": "pedropadila456@gmail.com",
+            "description": "Fedro bertanggung jawab atas analisis data dan pelaporan. Ia memastikan bahwa data yang digunakan akurat dan relevan untuk mendukung pengambilan keputusan serta menghasilkan wawasan yang mendalam."
+        },
+        {
+            "name": "Lutfi Julpian",
+            "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/Lutfi.jpg?raw=true",
+            "role": "Visualizer",
+            "email": "lutfijulpian@gmail.com",
+            "description": "Lutfi bertanggung jawab untuk menciptakan visualisasi data yang intuitif dan informatif. Ia membantu mengubah data mentah menjadi cerita yang menarik."
+        },
+        {
+            "name": "Arif Muhammad Rifai",
+            "image_url": "https://github.com/lutfijulpian/MaetalaSciencetist/blob/main/foto/Arif.jpg?raw=true",
+            "role": "Modeller",
+            "email": "arifmuchrif@gmail.com",
+            "description": "Arif bertanggung jawab atas pengembangan dan pemeliharaan model. Ia fokus pada pemodelan data yang presisi untuk memastikan hasil yang optimal dan dapat diandalkan dalam setiap analisis."
+        },
     ]
 
     image_width = 200
@@ -1036,18 +1037,18 @@ if selected == 'About Us':
         if 'image_url' in member:
             # Mengunduh gambar dari URL
             response = requests.get(member["image_url"])
-            image = Image.open(io.BytesIO(response.content))
+            image = Image.open(BytesIO(response.content))
             
             # Mengubah ukuran gambar
             image = image.resize((image_width, image_height))
             
-            # Menampilkan gambar di kolom pertama
+            # Menampilkan gambar di kolom pertama dengan margin atas
+            cols[0].markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)  # Menambahkan jarak atas
             cols[0].image(image, use_column_width=False)
-            st.write('<style>div.Widget.row-widget.stRadio>div{flex-direction:column;}</style>', unsafe_allow_html=True)
-        
+            
         with cols[1]:
             st.markdown(f"""
-            <div style='margin-top: 25px; background-color: #f5f5f1; padding: 10px; border-radius: 5px; color: #000000;'>
+            <div style='margin-top: 25px; padding: 10px; border-radius: 5px; color: #000000; border: 1px solid #ccc; background-color: #f5f5f1;'>
                 <strong>{member['name']}</strong>
                 <br>
                 <em>{member['role']}</em>
@@ -1057,6 +1058,18 @@ if selected == 'About Us':
                 {member['description']}
             </div>
             """, unsafe_allow_html=True)
+
+    # Tambahkan CSS untuk memberikan jarak antar elemen
+    st.markdown(
+        """
+        <style>
+        .row-widget.stColumns {
+            margin-bottom: 20px; /* Atur jarak antar baris anggota tim */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Footer
     st.markdown("""
