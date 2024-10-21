@@ -903,7 +903,7 @@ if selected == 'Simulasi':
     Dalam video ini, Anda akan melihat bagaimana sistem ini bekerja dalam memberikan notifikasi dan informasi terkait dengan potensi gempa.')
 
     # URL video dari YouTube
-    VIDEO_URL = "https://youtu.be/YaOTSjrTmJU"
+    VIDEO_URL = "https://youtu.be/plFbFassdg4"
 
     # Tampilkan video di Streamlit
     st.video(VIDEO_URL, autoplay=True, loop=True)
