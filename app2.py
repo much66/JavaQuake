@@ -1010,7 +1010,7 @@ if selected == 'About Us':
             "description": "Lutfi bertanggung jawab untuk menciptakan visualisasi data yang intuitif dan informatif. Ia membantu mengubah data mentah menjadi cerita yang menarik."
         },
         {
-            "name": "Arif Muhammad Rifai",
+            "name": "Arif Muhamad Rifai",
             "image_url": "https://github.com/much66/JavaQuake/blob/main/foto/Arif.jpg?raw=true",
             "role": "Modeller",
             "email": "arifmuchrif@gmail.com",
